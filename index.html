@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>묵찌빠!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- // 제목 -->
+    <div id="header">
+        <div id="title">묵찌빠 게임 😺</div>
+        <button id="start-btn" onClick="hiddentTextBtn()">START</button>
+        <button id="end-btn" onClick="showEndBtn()">TRY AGAIN?</button>
+    </div>
+    <p id="timer">3</p>
+     <!-- // 게임 박스 -->
+    <div id="main">
+        <div class="signal-wrap">
+            <span class="first-signal">가위</span>
+            <span class="second-signal">바위</span>
+            <span class="third-signal">보!!</span>
+        </div>
+        <div id="user-wrap">
+            <span>컴퓨터</span>
+            <span>사용자</span>
+        </div>
+        <div id="game-box">
+            <div class="computer-img"></div>
+            <span>vs</span>
+            <div class="user-img"></div>
+        </div>
+        <div class="result-wrap">
+            <div class="result-title"></div>
+            <div class="won"></div>
+        </div>
+        <div id="footer"> 
+            <button class="user-rock" onClick="onClickStatus('rock')">바위</button>
+            <button class="user-scissors" onClick="onClickStatus('scissors')">가위</button>
+            <button class="user-paper" onClick="onClickStatus('paper')">보</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
