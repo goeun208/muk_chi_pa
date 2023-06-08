@@ -52,12 +52,11 @@ const setTimer = () => {
         time = time - 1;
         timer.innerText = time;
     }, 1000);
-    setTimeout(() => {
-        // time = 3;
+    setTimeout(async () => { // 3초 뒤 실행
         clearInterval(interval);
         timer.style.display = 'none';
-        setComputerStatus(3); // 컴퓨터가 낼거 결정하기
-        titleAnimation();
+        await setComputerStatus(3); // 컴퓨터가 낼거 결정하기(가위-바위-보)
+        await titleAnimation();
         main.style.display = 'block';
     }, 3000);
 }
@@ -78,8 +77,20 @@ const showEndBtn = () => {
     location.reload();
 }
 
+const titleAnimation = async () => {
+    const interval = setInterval(() => { // 1초마다 반복 수행
+        if(index >= 0 && index < 3) {
+            title[index].style.display = 'inline-block';
+            index += 1;
+        }
+    }, 1000);
+    setTimeout(() => {
+        clearInterval(interval);
+    }, 4000);
+}
+
 // 랜덤하게 컴퓨터가 냄
-const setComputerStatus = (sec) => {
+const setComputerStatus = async (sec) => {
     computerStatus = rockScissorsPaperIndex[Math.floor(Math.random() * 3)];
     setTimeout(() => {
         computerImg.style.backgroundImage = computerImages[computerStatus];
@@ -87,24 +98,32 @@ const setComputerStatus = (sec) => {
 }
 
 // 사용자가 결정
-const onClickStatus = (status) => {
+const onClickStatus = async (status) => {
     userStatus = status;
     userImg.style.backgroundImage = userImages[userStatus];
-    compareStatus();
+    await compareStatus();
 }
 
+const endMuk = () => { // 게임 종료!
+    endBtn.style.display = 'block';
+    if(win === 'user') result.innerHTML = "승리!!!😻"
+    else result.innerHTML = "패배...😮‍💨"
+    rockBtn.style.display = 'none';
+    scissorsBtn.style.display = 'none';
+    paperBtn.style.display = 'none';
+}
 // 가위바위보
-const compareStatus = () => {
+const compareStatus = async () => {
     if (userStatus === computerStatus) { // 비긴 경우
         // gaBabo 다시 정하기 // 
         if (currentGame === 'gaBaBo') {
             userStatus = null;
-            setComputerStatus(3);
+            await setComputerStatus(3);
             index = 0;
             firstTitle.style.display = 'none';
             secondTitle.style.display = 'none';
             thirdTitle.style.display = 'none';
-            titleAnimation();
+            await titleAnimation();
         } else { // 묵찌빠 비김
             firstTitle.style.display = 'none';
             secondTitle.style.display = 'none';
@@ -118,24 +137,15 @@ const compareStatus = () => {
             || userStatus === 'rock' && computerStatus === 'paper'
             || userStatus === 'paper' && computerStatus === 'scissors') {
             win = 'computer'; // 컴퓨터가 이김
-            mukChiBaRule();
+            await mukChiBaRule();
         } else {
             win = 'user'; // 유저가 이김
-            mukChiBaRule();
+            await mukChiBaRule();
         }
     }
 }
-
-const endMuk = () => { // 게임 종료!
-    endBtn.style.display = 'block';
-    if(win === 'user') result.innerHTML = "승리!!!😻"
-    else result.innerHTML = "패배...😮‍💨"
-    rockBtn.style.display = 'none';
-    scissorsBtn.style.display = 'none';
-    paperBtn.style.display = 'none';
-}
-
-const mukChiBaRule = () => {
+//묵찌빠
+const mukChiBaRule = async () => {
     if (currentGame = 'mukChiBa') {
         firstTitle.style.display = 'none';
         secondTitle.style.display = 'none';
@@ -145,22 +155,22 @@ const mukChiBaRule = () => {
         if (win === null) endMuk();
         else if (win === 'user') {
             index = 0;
-            setComputerStatus(3);
+            await setComputerStatus(3);
             firstTitle.innerHTML = rockScissorsPaperKoran[prevResult];
             secondTitle.innerHTML = rockScissorsPaperKoran[prevResult];
             thirdTitle.innerHTML = rockScissorsPaperKoran[userStatus];
-            titleAnimation();
+            await titleAnimation();
 
             setTimeout(() => { // 3초 후
                 compareStatus(); //승패 판별
             }, 3000);
         } else {
             index = 0;
-            setComputerStatus(3);
+            await setComputerStatus(3);
             firstTitle.innerHTML = rockScissorsPaperKoran[prevResult];
             secondTitle.innerHTML = rockScissorsPaperKoran[prevResult];
             thirdTitle.innerHTML = rockScissorsPaperKoran[computerStatus];
-            titleAnimation();
+            await titleAnimation();
             
             setTimeout(() => { // 3초 후
                 compareStatus(); //승패 판별
@@ -169,14 +179,3 @@ const mukChiBaRule = () => {
     }
 }
 
-const titleAnimation = () => {
-    const interval = setInterval(() => { // 1초마다 반복 수행
-        if(index >= 0 && index < 3) {
-            title[index].style.display = 'inline-block';
-            index += 1;
-        }
-    }, 1000);
-    setTimeout(() => {
-        clearInterval(interval);
-    }, 4000);
-}
